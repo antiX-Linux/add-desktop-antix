@@ -1,0 +1,68 @@
+add-desktop-antix (0.3.1) unstable; urgency=low
+
+  * Removed gtkdialog dependency.
+
+ -- anticapitalista <antiX@operamail.com>  Sun, 19 Oct 2014 18:37:00 +0200
+
+add-desktop-antix (0.3.0) unstable; urgency=low
+
+  * Rewrite for antiX-14 series.
+
+ -- anticapitalista <antiX@operamail.com>  Mon, 23 Jun 2014 14:50:00 +0200
+
+
+add-desktop-antix (0.2.2) unstable; urgency=low
+
+  * Switch to dpkg-source 3.0 (quilt) format
+  * changes to .desktop file.
+
+ -- anticapitalista <antiX@operamail.com>  Wed, 16 Oct 2013 17:01:00 +0300
+
+add-desktop-antix (0.2.1) unstable; urgency=low 
+ 
+  * More localisations.
+
+ -- anticapitalista <antiX@operamail.com>  Wed, 16 Oct 2013 15:15:00 +0200
+
+
+add-desktop-antiX (0.2.0) unstable; urgency=low 
+ 
+  * ktsuss replaces gksu.
+
+ -- anticapitalista <antiX@operamail.com>  Sun, 23 September 2012 15:40:00 +0200
+
+
+add-desktop-antiX (0.1.5) unstable; urgency=low 
+ 
+  * Fixed ownership bug.
+
+ -- anticapitalista <antiX@operamail.com>  Sun, 26 August 2012 15:40:00 +0200
+
+
+add-desktop-antiX (0.1.4) unstable; urgency=low 
+ 
+  * Added copyright notice.
+
+ -- anticapitalista <antiX@operamail.com>  Mon, 16 July 2012 15:40:00 +0200
+
+
+add-desktop-antiX (0.1.3) unstable; urgency=low 
+ 
+  * Altered/bin/bash.
+
+ -- anticapitalista <antiX@operamail.com>  Tues, 10 July 2012 18:40:00 +0200
+
+
+add-desktop-antiX (0.1.2) unstable; urgency=low 
+ 
+  * Added localisations.
+
+ -- anticapitalista <antiX@operamail.com>  Wed 25 April 2012 15:30:00 +0200
+
+
+add-desktop-antiX (0.1.1) unstable; urgency=low 
+ 
+  * Initial Release.
+
+ -- anticapitalista <antiX@operamail.com>  Sat 28 Jan 2012 15:30:00 +0200
+
