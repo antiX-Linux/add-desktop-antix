@@ -1,0 +1,355 @@
+#!/usr/bin/env python
+# Dependencies: ??????
+# File Name: add-remove-items
+# Version: 2.1
+# Purpose: Add and Remove Desktop Launchers and Menu Items
+# Authors: Dave (david@daveserver.info)
+
+# Copyright (C) antiXCommunity http://antix.freeforums.org
+# License: gplv2
+# This file is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+################################################################################
+#################################################################
+
+import gtk
+from desktop_tool import *
+import re
+import os
+import sys
+
+USER_HOME = os.environ['HOME']
+DISPLAY = os.environ['DISPLAY']
+DISPLAY = re.sub(r':', '', DISPLAY)
+DISPLAY_SPLIT = DISPLAY.split('.')
+DISPLAY = DISPLAY_SPLIT[0]
+
+with open(USER_HOME+"/.desktop-session/desktop-code."+DISPLAY, "r") as f:
+  DESKTOP = f.readline()
+  DESKTOP = re.sub(r'\n', '', DESKTOP)
+DESKTOP = re.sub(r'.*-', '', DESKTOP)
+LOCATION=(USER_HOME+"/."+DESKTOP+"/keys")
+
+class Error:
+    def __init__(self, error):
+       cmdstring = "yad --image=\"error\"\
+       --title=\"add-start error\"\
+       --text=\"add-start has run into an error,\
+       \nplease rerun and correct the following error!\
+       \n\n%s\n\"\
+       --button=\"gtk-ok:0\"" % (error)
+       os.system(cmdstring) 
+       
+class Success:
+    def __init__(self, success):
+       cmdstring = "yad --image=\"info\"\
+       --title=\"add-start success\"\
+       --text=\"add-start has successfully completed,\
+       \n\n%s\n\"\
+       --button=\"gtk-ok:0\"" % (success)
+       os.system(cmdstring) 
+       
+       
+class Remove():
+    def build_drop_box(self,location):
+        if location == 1:
+		    path='/home/David/.local/share/applications/TCM'
+		    self.selectBox.remove(self.removeSelect)
+        elif location == 2:
+		    path='/home/David/Desktop'
+		    self.selectBox.remove(self.removeSelect)
+        elif location == 3:
+		    path='/home/David/.local/share/applications'
+		    self.selectBox.remove(self.removeSelect)
+        else:
+			path=''
+			print 'Error'
+				
+        self.removeSelect = gtk.combo_box_new_text()
+        self.removeSelect.append_text('No line Selected:')
+    
+        for file in os.listdir(path):
+            Name, Extension = os.path.splitext(file)
+            if Extension == '.desktop':
+                self.removeSelect.append_text(file)
+        
+        #removeSelect.connect('changed', self.changed_cb)
+        self.removeSelect.set_active(0)
+        self.selectBox.pack_start(self.removeSelect)
+        self.removeSelect.show()
+
+    def location_selected(self,stuff):
+        self.choice = self.place_select.get_active()	
+        self.build_drop_box(self.choice)
+		
+    def __init__(self):
+        
+        self.frame = gtk.Frame("Remove Items")
+        self.frame.set_border_width(10)
+        self.frame.show()
+        
+        self.label = gtk.Label("Remove")
+        self.label.show()
+        
+        self.vbox = gtk.VBox()
+        self.frame.add(self.vbox)
+        self.vbox.show()
+
+        self.place_select = gtk.combo_box_new_text()
+        self.place_select.append_text('No line Selected:')
+        self.place_select.append_text('1) Personal')
+        self.place_select.append_text('2) Desktop Shortcut')
+        self.place_select.append_text('3) Application Menu')
+    
+        self.place_select.connect('changed', self.location_selected)
+        self.place_select.set_active(0)
+        self.vbox.pack_start(self.place_select)
+        self.place_select.show()
+        
+        label = gtk.Label()
+        label.set_text("Line to Remove")
+        self.vbox.pack_start(label)
+        label.show()
+        
+        self.selectBox = gtk.VBox()
+        self.vbox.pack_start(self.selectBox)
+        self.selectBox.show()
+        
+        #BUTTON BOX
+        
+        buttonbox = gtk.HButtonBox()
+        self.vbox.pack_start(buttonbox)
+        buttonbox.show()
+        
+        remove = gtk.Button(stock=gtk.STOCK_REMOVE)
+        #remove.connect("clicked", self.apply)
+        buttonbox.pack_start(remove)
+        remove.show()
+        
+        close = gtk.Button(stock=gtk.STOCK_CLOSE)
+        close.connect("clicked", lambda w: gtk.main_quit())
+        buttonbox.add(close)
+        close.show()
+        
+
+       
+class Add():
+	
+    def icon_select(self,widget):
+        dialog = gtk.FileChooserDialog("Open...", None, gtk.FILE_CHOOSER_ACTION_OPEN,(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+        dialog.set_current_folder(os.path.expanduser('/usr/share/icons/'))
+        dialog.set_default_response(gtk.RESPONSE_OK)
+        pixbuf = get_icon("wallpaper", 48)
+        dialog.set_icon(pixbuf)
+        
+        filter = gtk.FileFilter()
+        filter.set_name("Images")
+        filter.add_mime_type("image/png")
+        filter.add_mime_type("image/jpeg")
+        filter.add_mime_type("image/gif")
+        filter.add_mime_type("image/tiff")
+        filter.add_pattern("*.png")
+        filter.add_pattern("*.jpg")
+        filter.add_pattern("*.gif")
+        filter.add_pattern("*.jpeg")
+        filter.add_pattern("*.tiff")
+        filter.add_pattern("*.tif")
+        dialog.add_filter(filter)
+  
+        previewImage = gtk.Image()
+        dialog.set_preview_widget(previewImage)
+        dialog.set_use_preview_label(False)
+  
+        response = dialog.run()
+        if response == gtk.RESPONSE_OK:
+          self.icon = dialog.get_filename()
+          
+        elif response == gtk.RESPONSE_CANCEL:
+  		  print "No file selected"  
+        dialog.destroy()
+    
+    def build_label(self,label_name):
+        lalign = gtk.Alignment(0, 0, 0, 0)
+        label = gtk.Label(" %s:" % label_name)
+        lalign.add(label)
+        self.left_box.pack_start(lalign)
+        label.show()
+        lalign.show()
+    
+    def __init__(self):
+        self.frame = gtk.Frame("Add Items")
+        self.frame.set_border_width(10)
+        self.frame.show()
+        
+        self.label = gtk.Label("Add")
+        self.label.show()
+        
+        border_box = gtk.VBox()
+        self.frame.add(border_box)
+        border_box.show()
+        
+        main_box = gtk.HBox()
+        border_box.pack_start(main_box)
+        main_box.show()
+        
+        self.left_box = gtk.VBox()
+        main_box.pack_start(self.left_box)
+        self.left_box.show()
+        
+        right_box = gtk.VBox()
+        main_box.pack_start(right_box)
+        right_box.show()
+        
+        #MAIN FIELDS
+        self.build_label("Item Name")
+        
+        lalign = gtk.Alignment(0, 0, 0, 0)
+        name_entry = gtk.Entry()
+        lalign.add(name_entry)
+        right_box.pack_start(lalign)
+        name_entry.show()
+        lalign.show()
+        
+        self.build_label("Icon")
+        
+        lalign = gtk.Alignment(0, 0, 0, 0)
+        icon_entry = gtk.Entry()
+        lalign.add(icon_entry)
+        right_box.pack_start(lalign)
+        icon_entry.show()
+        lalign.show()
+        
+        self.picturebutton = gtk.Button()
+        icon_button = DesktopToolWidget("Select Picture", 'insert-image', 30, gtk.ORIENTATION_HORIZONTAL, wrap = 7)
+        self.picturebutton.add(icon_button)
+        self.picturebutton.connect("clicked", self.icon_select)
+        self.picturebutton.set_size_request(100,50)
+        right_box.pack_start(self.picturebutton)
+        self.picturebutton.show()
+        
+        self.build_label("Category")
+        
+        self.category = gtk.combo_box_new_text()
+        self.category.append_text('No line Selected:')
+        self.category.append_text('1) Accessories')
+        self.category.append_text('2) Education')
+        self.category.append_text('3) Games')
+        self.category.append_text('4) Graphics')
+        self.category.append_text('5) Internet')
+        self.category.append_text('6) Office')
+        self.category.append_text('7) Other')
+        self.category.append_text('8) Programing')
+        self.category.append_text('9) Sound and Video')
+        self.category.append_text('10) System Tools')
+        self.category.append_text('11) Preferences')
+    
+        #self.category.connect('changed', self.location_selected)
+        self.category.set_active(0)
+        right_box.pack_start(self.category)
+        self.category.show()
+        
+        self.build_label("Command")
+        
+        lalign = gtk.Alignment(0, 0, 0, 0)
+        icon_entry = gtk.Entry()
+        lalign.add(icon_entry)
+        right_box.pack_start(lalign)
+        icon_entry.show()
+        lalign.show()
+        
+        self.build_label("Location")
+        
+        place_select = gtk.combo_box_new_text()
+        place_select.append_text('No line Selected:')
+        place_select.append_text('1) Personal')
+        place_select.append_text('2) Desktop Shortcut')
+        place_select.append_text('3) Application Menu')
+    
+        #removeSelect.connect('changed', self.location_selected)
+        place_select.set_active(0)
+        right_box.pack_start(place_select)
+        place_select.show()
+        
+        self.build_label("File Name")
+        
+        lalign = gtk.Alignment(0, 0, 0, 0)
+        icon_entry = gtk.Entry()
+        lalign.add(icon_entry)
+        right_box.pack_start(lalign)
+        icon_entry.show()
+        lalign.show()
+        
+        self.build_label("Launch In Terminal")
+        
+        lalign = gtk.Alignment(0, 0, 0, 0)
+        icon_entry = gtk.Entry()
+        lalign.add(icon_entry)
+        right_box.pack_start(lalign)
+        icon_entry.show()
+        lalign.show()
+        
+        #BUTTON BOX
+        
+        buttonbox = gtk.HButtonBox()
+        border_box.pack_start(buttonbox)
+        buttonbox.show()
+        
+        
+        add = gtk.Button(stock=gtk.STOCK_ADD)
+        #add.connect("clicked", self.apply)
+        buttonbox.pack_start(add)
+        add.show()
+        
+        close = gtk.Button(stock=gtk.STOCK_CLOSE)
+        close.connect("clicked", lambda w: gtk.main_quit())
+        buttonbox.add(close)
+        close.show()
+        
+
+class mainWindow():
+
+    def __init__(self):
+        window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        window.set_title("Add Remove Items")
+        pixbuf = get_icon("preferences-system", 48)
+        window.set_icon(pixbuf)
+        window.connect("destroy", lambda w: gtk.main_quit())
+        
+        mainbox = gtk.VBox()
+        window.add(mainbox)
+        mainbox.show()
+
+        table = gtk.Table(2,3,False)
+        mainbox.pack_start(table)
+        table.show() 
+        
+        self.notebook = gtk.Notebook()
+        self.notebook.set_tab_pos(gtk.POS_TOP)
+        self.notebook.set_size_request(400,400)
+        table.attach(self.notebook, 0,3,0,1, xoptions=gtk.FILL, yoptions=gtk.FILL)
+        self.notebook.show()
+        
+        #Start Add Class
+        self.notebook.append_page(Add().frame, Add().label)
+        
+        #Start Remove Class
+        self.notebook.append_page(Remove().frame, Remove().label)
+        
+        window.show()
+
+
+if os.path.isfile(LOCATION) == (False):
+    sys.exit(Error("There is no file ~/.%s/startup \nThe session variable DESKTOP_CODE='%s' \nincorrectly matches your system" % ((DESKTOP), (DESKTOP)) ))
+mainWindow()
+gtk.main()

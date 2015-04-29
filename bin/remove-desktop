@@ -34,6 +34,7 @@ case $(echo $SELECTED | cut -d ")" -f1) in
     ;;
 "2") #Desktop Shortcut
     FILE_LOCATION="$HOME/Desktop"
+    ROX_REMOVE='true'
     CATEGORIES=""
     ;;
 "3") #Task Centric Menu
@@ -44,6 +45,14 @@ esac
 
 SELECTED=$(GetDesktopInformation)
 if [ -n "$SELECTED" ]; then
+    if [ "$ROX_REMOVE" = 'true' ]; then
+        . ./session-information.sh
+        SESSION_WM=$(session_wm)
+        ROX_FILE="$HOME/.config/rox.sourceforge.net/ROX-Filer/pb_antiX-$SESSION_WM"
+        EXEC=$(cat $FILE_LOCATION/$SELECTED |grep "^Exec=" |cut -d "=" -f2)
+        search-and-replace.py --from="$EXEC" --to="" --file="$ROX_FILE"
+        desktop-session-exit -R
+    fi
     rm "$FILE_LOCATION/$SELECTED"
 fi
 
