@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Add / Remove Items
+Comment= Add / Remove a desktop or menu item
+Exec=add-remove-entry
+Icon=computer.png
+Terminal=false
+Type=Application
+Categories=X-antiX;X-Personal;Settings;
+NoDisplay=False

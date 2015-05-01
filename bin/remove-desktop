@@ -14,12 +14,14 @@ function checkcancel {
 GetDesktopInformation() {
     for file in $(ls $FILE_LOCATION | grep ".desktop")
     do
-    echo "$file"
-        if [ "$CATEGORIES" = "X-Personal" ]; then
-            if grep "X-Personal" $FILE_LOCATION/$file 1>/dev/null ; then
-                echo "$file"
-            fi
-        fi
+        echo "$file"
+
+       # if [ "$CATEGORIES" = "X-Personal" ]; then
+       #     if grep "X-Personal" $FILE_LOCATION/$file 1>/dev/null ; then
+       #         echo "$file"
+       #     fi
+       # else
+       # fi
     done | yad --title=$"Menu Manager" --center --width="400" --height="300" --text=$"Select the items to remove" --list --separator="" --column=$"Menu Files"
     checkcancel;
 }
