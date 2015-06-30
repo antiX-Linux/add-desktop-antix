@@ -14,14 +14,12 @@ function checkcancel {
 GetDesktopInformation() {
     for file in $(ls $FILE_LOCATION | grep ".desktop")
     do
-        echo "$file"
-
-       # if [ "$CATEGORIES" = "X-Personal" ]; then
-       #     if grep "X-Personal" $FILE_LOCATION/$file 1>/dev/null ; then
-       #         echo "$file"
-       #     fi
-       # else
-       # fi
+    echo "$file"
+        if [ "$CATEGORIES" = "X-Personal" ]; then
+            if grep "X-Personal" $FILE_LOCATION/$file 1>/dev/null ; then
+                echo "$file"
+            fi
+        fi
     done | yad --title=$"Menu Manager" --center --width="400" --height="300" --text=$"Select the items to remove" --list --separator="" --column=$"Menu Files"
     checkcancel;
 }
@@ -36,7 +34,6 @@ case $(echo $SELECTED | cut -d ")" -f1) in
     ;;
 "2") #Desktop Shortcut
     FILE_LOCATION="$HOME/Desktop"
-    ROX_REMOVE='true'
     CATEGORIES=""
     ;;
 "3") #Task Centric Menu
@@ -47,14 +44,6 @@ esac
 
 SELECTED=$(GetDesktopInformation)
 if [ -n "$SELECTED" ]; then
-    if [ "$ROX_REMOVE" = 'true' ]; then
-        . ./session-information.sh
-        SESSION_WM=$(session_wm)
-        ROX_FILE="$HOME/.config/rox.sourceforge.net/ROX-Filer/pb_antiX-$SESSION_WM"
-        EXEC=$(cat $FILE_LOCATION/$SELECTED |grep "^Exec=" |cut -d "=" -f2)
-        search-and-replace.py --from="$EXEC" --to="" --file="$ROX_FILE"
-        desktop-session-exit -R
-    fi
     rm "$FILE_LOCATION/$SELECTED"
 fi
 
