@@ -1,3 +1,9 @@
+add-desktop-antix (0.3.7) unstable; urgency=medium
+
+  * Many translation changes 
+
+ -- anticapitalista <antix@operamail.com>  Fri, 06 Jan 2017 21:05:03 +0200
+
 add-desktop-antix (0.3.6) unstable; urgency=low
 
   * Added German
