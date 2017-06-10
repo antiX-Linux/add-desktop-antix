@@ -1,3 +1,9 @@
+add-desktop-antix (0.3.9) unstable; urgency=low
+
+  * Added Czech, Slovak translations
+
+ -- anticapitalista <antix@operamail.com>  Sat, 01 Apr 2017 19:07:30 +0300
+
 add-desktop-antix (0.3.8) unstable; urgency=medium
 
   * Many translation changes 
