@@ -1,3 +1,9 @@
+add-desktop-antix (0.3.10) unstable; urgency=medium
+
+  * Show in Applications menu
+
+ -- anticapitalista <antix@operamail.com>  Sat, 07 Oct 2017 14:34:06 +0300
+
 add-desktop-antix (0.3.9) unstable; urgency=low
 
   * Added Czech, Slovak translations
