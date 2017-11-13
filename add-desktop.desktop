@@ -1,7 +1,25 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Add Menu Item
+Name[ca]=Afegeix un ítem al Menú
+Name[de]=Einen Menüpunkt hinzufügen
+Name[el]=Add Menu Item
+Name[es]=Agregue ítem al menú
+Name[fr]=Ajouter un élément au Menu
+Name[it]=Aggiungi Voce al Menu
+Name[nl]=Voeg Menu Item Toe
+Name[pt]=Adicionar item
+Name[sv]=Lägg till Menu Objekt
 Comment= Add a menu item
+Comment[ca]=Afegir un ítem al Menú
+Comment[de]=Einen Menüpunkt hinzufügen
+Comment[el]=Προσθήκη Μενού
+Comment[es]=Agregue un ítem al menú
+Comment[fr]=Ajoute une entrée au Menu
+Comment[it]=Aggiungere una voce al Menu
+Comment[nl]=Voeg een menu item toe
+Comment[pt]=Adicionar entradas ao menu
+Comment[sv]=Lägg till ett Menu Objekt
 Exec=add-desktop
 Icon=gnome-control-center
 Terminal=false

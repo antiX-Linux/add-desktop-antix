@@ -1,3 +1,10 @@
+add-desktop-antix (0.3.11) unstable; urgency=medium
+
+  * localized desktop file
+  * New tanslations
+
+ -- anticapitalista <antix@operamail.com>  Mon, 13 Nov 2017 16:55:15 +0200
+
 add-desktop-antix (0.3.10) unstable; urgency=medium
 
   * Show in Applications menu
