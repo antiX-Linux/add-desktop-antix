@@ -1,3 +1,10 @@
+add-desktop-antix (0.3.12) unstable; urgency=medium
+
+  * Update translations of scripts and desktop file
+  * New Amharic
+
+ -- anticapitalista <antix@operamail.com>  Fri, 02 Mar 2018 15:08:02 +0200
+
 add-desktop-antix (0.3.11) unstable; urgency=medium
 
   * localized desktop file
